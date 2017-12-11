@@ -96,4 +96,33 @@ public class SlideMenu extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    
+    public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+        private GoogleMap mMap;
+        
+
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            mMap = googleMap;
+
+            LatLng lviv = new LatLng(49.82380909,24.03808594);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lviv, 15));
+
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+            // Add a marker in parkings and move the camera
+            LatLng parking1 = new LatLng(49.84118611, 24.02551979);
+            mMap.addMarker(new MarkerOptions().position(parking1).title("Parking near Ivan Franko University"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(parking1));
+
+            LatLng parking2 = new LatLng(49.83978843, 24.0327926);
+            mMap.addMarker(new MarkerOptions().position(parking2).title("Parking near Monument of King Danylo Halytskyi"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(parking2));
+
+            LatLng parking3 = new LatLng(49.84382049, 24.02835622);
+            mMap.addMarker(new MarkerOptions().position(parking3).title("Parking near Vernisazh"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(parking3));
+        }
+
+    }
 }
