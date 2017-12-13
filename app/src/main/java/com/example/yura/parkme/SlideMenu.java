@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +13,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.example.yura.parkme.models.ParkingModel;
+import com.example.yura.parkme.models.Parkings;
+import com.example.yura.parkme.network.HTTPConnection;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class SlideMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -80,7 +91,7 @@ public class SlideMenu extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_search) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
@@ -96,4 +107,31 @@ public class SlideMenu extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+        private GoogleMap mMap;
+
+
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            mMap = googleMap;
+
+            LatLng lviv = new LatLng(49.82380909, 24.03808594);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lviv, 15));
+
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+            ParkingModel list = HTTPConnection.parkingList(49.82272238, 23.98535907);
+
+            Parkings[] parkings = list.getParkings();
+
+            for (int i = 0; i < parkings.Count(); i++) {
+                LatLng parking1 = new LatLng(parkings[i].getCoordnates().longtitude, parkings[i].getCoordnates().latitude);
+                mMap.addMarker(new MarkerOptions().position(parking1).title(parkings[i].getParkingName()));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(parking1));
+            }
+        }
+
+    }
+
 }
