@@ -20,6 +20,7 @@ import com.example.yura.parkme.network.HTTPConnection;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -108,12 +109,24 @@ public class SlideMenu extends AppCompatActivity
     }
 
     public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
         private GoogleMap mMap;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_slide_menu);
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+        }
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
 
             mMap = googleMap;
+
             LatLng lviv = new LatLng(49.82380909, 24.03808594);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lviv, 15));
 
@@ -131,5 +144,6 @@ public class SlideMenu extends AppCompatActivity
         }
     }
 
-
 }
+
+
