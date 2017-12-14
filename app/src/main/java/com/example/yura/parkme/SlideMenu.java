@@ -20,7 +20,6 @@ import com.example.yura.parkme.network.HTTPConnection;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -111,27 +110,26 @@ public class SlideMenu extends AppCompatActivity
     public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
         private GoogleMap mMap;
 
-
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            mMap = googleMap;
 
+            mMap = googleMap;
             LatLng lviv = new LatLng(49.82380909, 24.03808594);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lviv, 15));
 
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-            ParkingModel list = HTTPConnection.parkingList(49.82272238, 23.98535907);
+            ParkingModel list = HTTPConnection.parkingList(getApplicationContext(), 49.82272238, 23.98535907);
 
             Parkings[] parkings = list.getParkings();
 
-            for (int i = 0; i < parkings.Count(); i++) {
-                LatLng parking1 = new LatLng(parkings[i].getCoordnates().longtitude, parkings[i].getCoordnates().latitude);
-                mMap.addMarker(new MarkerOptions().position(parking1).title(parkings[i].getParkingName()));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(parking1));
+            for (int i = 0; i < parkings.length; i++) {
+                LatLng parking = new LatLng(Double.parseDouble(parkings[i].getCoordnates().longtitude), Double.parseDouble(parkings[i].getCoordnates().latitude));
+                mMap.addMarker(new MarkerOptions().position(parking).title(parkings[i].getParkingName()));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(parking));
             }
         }
-
     }
+
 
 }
