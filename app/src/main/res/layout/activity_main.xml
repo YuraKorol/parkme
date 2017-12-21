@@ -45,7 +45,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="56dp"
-        android:text="ParkME"
+        android:text="ParkMe"
         android:textColor="#f3e2f5"
         android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
